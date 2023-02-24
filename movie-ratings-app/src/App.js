@@ -7,18 +7,18 @@ import {Routes, Route, Link, useParams} from "react-router-dom";
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const getData = () => (
-    fetch('./movies.json',
-      {
-        headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-        }
-      }
-    )
-    .then(response => response.json())
-    .catch(error => console.error(error))
-  )
+// const getData = () => (
+//     fetch('./movies.json',
+//       {
+//         headers: {
+//         'Content-Type': 'application/json',
+//         'Accept': 'application/json'
+//         }
+//       }
+//     )
+//     .then(response => response.json())
+//     .catch(error => console.error(error))
+//   )
 
 const App = () => {
 
@@ -75,11 +75,19 @@ const App = () => {
                 "poster": image,
                 "rating": rating
             }
-            
-            const newList = [...movies];
-            newList.push(newMovieRating);
-            setMovies(newList);
-            console.log(newList)
+        
+            // const newList = [...movies];
+            // newList.push(newMovieRating);
+            // setMovies(newList);
+            // console.log(newList)
+
+        const doPostRequest = async () =>{
+          const res = await axios.post("http://localhost:8000/submit_review", newMovieRating);
+          let data = res.data;
+          
+        }
+        doPostRequest();
+
 
         txtMovieName.current.value = "";
         txtReleaseDate.current.value = "";
