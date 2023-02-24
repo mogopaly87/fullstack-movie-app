@@ -18,10 +18,24 @@ app.post('/submit_review', async (req, res) => {
     // console.log(data);
 });
 
-// app.get("/hello/:name", (req, res) => {
-//     const { name } = req.params;
-//     res.send(`Hello ${name}!`);
-// })
+app.delete("/movies/:id", async (req, res) => {
+    try{
+    const params  = await req.params;
+    // console.log(params);
+    const movies = await db.collection('ratings');
+    const query = {id: parseInt(params.id)}
+    console.log(query);
+    const result = await movies.deleteOne(query);
+
+    if (result.deletedCount === 1) {
+        console.log("Successfully deleted one document.");
+    } else {
+        console.log("No documents matched the query. Deleted 0 documents.");
+    }
+    } finally {
+        await db.close;
+    }
+})
 
 app.get("/movies", async (req, res) => {
 

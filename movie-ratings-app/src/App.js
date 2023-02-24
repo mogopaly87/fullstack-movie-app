@@ -7,23 +7,10 @@ import {Routes, Route, Link, useParams} from "react-router-dom";
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// const getData = () => (
-//     fetch('./movies.json',
-//       {
-//         headers: {
-//         'Content-Type': 'application/json',
-//         'Accept': 'application/json'
-//         }
-//       }
-//     )
-//     .then(response => response.json())
-//     .catch(error => console.error(error))
-//   )
 
 const App = () => {
 
-  const [movies, setMovies] = useState([])
-  // const [movieName] = useParams();
+  const [movies, setMovies] = useState([]);
  
   useEffect(() => {
     // Using axios to get data from Express
@@ -36,17 +23,16 @@ const App = () => {
     
     loadMovies();
 
-    // getData()
-    //   .then(result => {
-    //     setMovies(result)
-    //   })
-  }, [])
+    
+  }, [movies])
 
   const handleRemoveMovie = item => {
-    const newMoviesList = movies.filter(
-      (movie) => item.id !== movie.id
-    );
-    setMovies(newMoviesList);
+
+    const deleteMovie = async () => {
+      await axios.delete(`http://localhost:8000/movies/${item.id}`)
+    }
+    deleteMovie();
+    
   }
 
 
@@ -75,15 +61,10 @@ const App = () => {
                 "poster": image,
                 "rating": rating
             }
-        
-            // const newList = [...movies];
-            // newList.push(newMovieRating);
-            // setMovies(newList);
-            // console.log(newList)
 
         const doPostRequest = async () =>{
-          const res = await axios.post("http://localhost:8000/submit_review", newMovieRating);
-          let data = res.data;
+          await axios.post("http://localhost:8000/submit_review", newMovieRating);
+          // let data = res.data;
           
         }
         doPostRequest();
@@ -97,7 +78,7 @@ const App = () => {
     }
   return (
     <div className="App">
-      <h1>This is a test</h1>
+      <h1>Movies Review</h1>
       <nav className="d-flex justify-content-around">
         <button type="button" className="btn btn-primary"><Link style={{textDecoration: "none", color:"whitesmoke"}} className="w-49" to="/">Home</Link></button>
         <button type="button" className="btn btn-primary"><Link style={{textDecoration: "none", color:"whitesmoke"}} className="w-49" to="submit_review">Write Review</Link></button>
