@@ -1,25 +1,28 @@
 import express from 'express';
 import { db, connectToDb} from './db.js';
-
+import cors from 'cors';
+// const cors = require('cors');
 const app = express();
+app.use(cors());
 app.use(express.json())
+
 
 app.post('/hello', (req, res) => {
     res.send(`Hello ${req.body.name}!`);
 });
 
-app.get("/hello/:name", (req, res) => {
-    const { name } = req.params;
-    res.send(`Hello ${name}!`);
-})
+// app.get("/hello/:name", (req, res,next) => {
+//     const { name } = req.params;
+//     res.send(`Hello ${name}!`);
+// })
 
-app.get("/movie/:name", async (req, res) => {
+app.get("/movies", async (req, res) => {
 
     const {name} = req.params;
 
-    const movie = await db.collection('ratings').findOne({name});
-
-    res.json(movie);
+    const movies = await db.collection('ratings').find({});
+    const allMovies = await movies.toArray();
+    res.send(allMovies)
 })
 
 connectToDb(() =>{

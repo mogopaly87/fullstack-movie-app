@@ -3,7 +3,8 @@ import './App.css';
 import React, {useState, useEffect, useRef} from 'react';
 import List from './List';
 import ReviewForm from './Form';
-import {Routes, Route, Link} from "react-router-dom";
+import {Routes, Route, Link, useParams} from "react-router-dom";
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const getData = () => (
@@ -22,13 +23,23 @@ const getData = () => (
 const App = () => {
 
   const [movies, setMovies] = useState([])
-
+  // const [movieName] = useParams();
  
   useEffect(() => {
-    getData()
-      .then(result => {
-        setMovies(result)
-      })
+    // Using axios to get data from Express
+    const loadMovies = async () => {
+      const response = await axios.get(`http://localhost:8000/movies`)
+      const movieInfo = response.data;
+
+      setMovies(movieInfo);
+    }
+    
+    loadMovies();
+
+    // getData()
+    //   .then(result => {
+    //     setMovies(result)
+    //   })
   }, [])
 
   const handleRemoveMovie = item => {
