@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 
 
 const app = express();
-// app.use(express.json())
+app.use(express.json())
 app.use(cors())
 app.use(express.static(path.join(__dirname, '../build')))
 
@@ -17,7 +17,7 @@ app.get(/^(?!\/api).+/, (req, res) => {
     res.sendFile(path.join(__dirname, '../build/index.html'));
 })
 
-app.post('api/submit_review', async (req, res) => {
+app.post('/submit_review', async (req, res) => {
     const data = await req.body
     await db.collection('ratings').insertOne(data, (err, res) => {
         if (err) throw err;
@@ -27,13 +27,11 @@ app.post('api/submit_review', async (req, res) => {
     // console.log(data);
 });
 
-app.delete("api/movies/:id", async (req, res) => {
+app.delete("/movies/:id", async (req, res) => {
     try{
     const params  = await req.params;
-    // console.log(params);
     const movies = await db.collection('ratings');
-    const query = {id: parseInt(params.id)}
-    console.log(query);
+    const query = {name: (params.id)}
     const result = await movies.deleteOne(query);
 
     if (result.deletedCount === 1) {
@@ -45,6 +43,13 @@ app.delete("api/movies/:id", async (req, res) => {
         await db.close;
     }
 })
+
+// app.get("/", async (req, res) => {
+
+//     const movies = await db.collection('ratings').find({});
+//     const allMovies = await movies.toArray();
+//     res.send(allMovies)
+// })
 
 app.get("/api", async (req, res) => {
 

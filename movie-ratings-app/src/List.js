@@ -1,15 +1,15 @@
 import Item from "./Item";
 
 
-const List = ({list, onRemoveItem}) => (
-  
-  list.map(item => (
+const List = ({list, onRemoveItem}) => {
+  return (Object.keys(list).map((key) => (
     <Item 
-      key={item.id}
-      item={item}
+      key={list[key]['name']}
+      item={list[key]}
       onRemoveItem={onRemoveItem}
     />
-  ))
-)
+    // console.log(list[key]['id'])
+  )))
+  }
 
 export default List;
