@@ -15,7 +15,7 @@ const App = () => {
   useEffect(() => {
     // Using axios to get data from Express
     const loadMovies = async () => {
-      const response = await axios.get(`http://localhost:8000/movies`)
+      const response = await axios.get(`http://localhost:8000/api`)
       const movieInfo = response.data;
 
       setMovies(movieInfo);
@@ -29,7 +29,7 @@ const App = () => {
   const handleRemoveMovie = item => {
 
     const deleteMovie = async () => {
-      await axios.delete(`http://localhost:8000/movies/${item.id}`)
+      await axios.delete(`http://localhost:8000/api/movies/${item.id}`)
     }
     deleteMovie();
     
@@ -63,7 +63,7 @@ const App = () => {
             }
 
         const doPostRequest = async () =>{
-          await axios.post("http://localhost:8000/submit_review", newMovieRating);
+          await axios.post("http://localhost:8000/api/submit_review", newMovieRating);
           // let data = res.data;
           
         }
