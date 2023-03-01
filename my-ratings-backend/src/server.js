@@ -3,6 +3,7 @@ import path from 'path';
 import { db, connectToDb} from './db.js';
 import {fileURLToPath} from 'url';
 import cors from 'cors';
+import multer from 'multer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,18 +13,24 @@ const app = express();
 app.use(express.json())
 app.use(cors())
 app.use(express.static(path.join(__dirname, '../build')))
+app.use(express.static(path.join(__dirname, '../posters')))
+const upload = multer({dest: 'posters/'})
+
 
 app.get(/^(?!\/api).+/, (req, res) => {
     res.sendFile(path.join(__dirname, '../build/index.html'));
 })
 
-app.post('/submit_review', async (req, res) => {
-    const data = await req.body
-    await db.collection('ratings').insertOne(data, (err, res) => {
+
+
+app.post('/submit_review', upload.single('movie_poster'), async (req, res) => {
+    // console.log(req.body)
+    await db.collection('ratings').insertOne({'name':req.body.movie_name, 'date':req.body.releaseDate, 'actors':req.body.actors, 'rating':req.body.rating, 'poster':req.file.filename}, (err, res) => {
         if (err) throw err;
         console.log(res)
         db.close()
     });
+    res.redirect('/')
     // console.log(data);
 });
 
