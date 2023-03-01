@@ -59,7 +59,7 @@ const App = () => {
                 "poster": image,
                 "rating": rating
             }
-
+          console.log(`Printing object before upload ${newMovieRating}`)
         const doPostRequest = async () =>{
           await axios.post("/submit_review", newMovieRating);
           // let data = res.data;

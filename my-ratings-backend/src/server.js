@@ -24,8 +24,8 @@ app.get(/^(?!\/api).+/, (req, res) => {
 
 
 app.post('/submit_review', upload.single('movie_poster'), async (req, res) => {
-    // console.log(req.body)
-    await db.collection('ratings').insertOne({'name':req.body.movie_name, 'date':req.body.releaseDate, 'actors':req.body.actors, 'rating':req.body.rating, 'poster':req.file.filename}, (err, res) => {
+    
+    await db.collection('ratings').insertOne({'name':req.body.movie_name, 'releaseDate':req.body.releaseDate, 'actors':req.body.actors, 'rating':req.body.rating, 'poster':req.file.filename}, (err, res) => {
         if (err) throw err;
         console.log(res)
         db.close()
