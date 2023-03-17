@@ -9,11 +9,11 @@ dotenv.config();
 let db;
 
 async function connectToDb(cb) {
-    const ssm = new SSM();
+    const ssm = new SSM({region: 'us-east-1'});
     var params = {
         Name: '/production/mongodbpass',
         WithDecryption: true,
-        Region: 'us-east-1'
+        
     }
     ssm.getParameter(params, (err, data) => {
         if (err) console.log(err, err.stack);
