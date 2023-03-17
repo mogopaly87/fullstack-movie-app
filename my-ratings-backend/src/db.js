@@ -13,6 +13,7 @@ async function connectToDb(cb) {
     var params = {
         Name: '/production/mongodbpass',
         WithDecryption: true,
+        region: 'us-east-1'
     }
     ssm.getParameter(params, (err, data) => {
         if (err) console.log(err, err.stack);
