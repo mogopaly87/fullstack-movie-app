@@ -15,12 +15,12 @@ async function connectToDb(cb) {
         WithDecryption: true,
         
     }
-    ssm.getParameter(params, (err, data) => {
+    ssm.getParameter(params, async(err, data) => {
         if (err) console.log(err, err.stack);
         else {
             // console.log(data.Parameter.Value)
             const client = new MongoClient(data.Parameter.Value);
-            client.connect();
+            await client.connect();
             db = client.db('ratingsdb')
             cb();
         }
